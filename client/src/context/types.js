@@ -1,0 +1,3 @@
+// PERSONS
+export const GET_ALL_PERSONS = 'GET_ALL_PERSONS'
+export const PERSIST_GROUP = 'PERSIST_GROUP'
