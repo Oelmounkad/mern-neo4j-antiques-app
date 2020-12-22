@@ -7,12 +7,12 @@ const path = require('path')
 connectDB()
 
 // PORT
-const PORT = process.env.PORT || 5000 
+const PORT = process.env.PORT || 4000 
 
 
 // Users routes
 app.use('/api/persons',require('./routes/persons'))
-
+app.use('/api/graph',require('./routes/graph'))
 
 //Serve static assets in production
 

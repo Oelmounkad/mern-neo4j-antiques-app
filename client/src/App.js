@@ -2,7 +2,9 @@ import './App.css';
 import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
 import PersonList from './components/PersonList';
 import PersonState from './context/person/PersonState';
-import GroupList from './components/GroupList';
+import Group from './components/Group';
+import Person from './components/Person';
+import AddPerson from './components/AddPerson';
 
 
 function App() {
@@ -13,7 +15,10 @@ function App() {
       <Switch>
 
           <Route exact path="/" component={PersonList} />
-          <Route exact path="/groups/:id" component={GroupList} />
+          <Route exact path="/person/:id" component={Person} />
+          <Route exact path="/group/:id" component={Group} />
+
+          <Route exact path="/person/add" component={AddPerson} />
 
       </Switch>
 

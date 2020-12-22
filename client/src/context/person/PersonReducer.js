@@ -1,4 +1,4 @@
-import {GET_ALL_PERSONS,PERSIST_GROUP} from '../types'
+import {GET_ALL_PERSONS,PERSIST_GROUP,PERSIST_CHOSEN_PERSON,DELETE_CHOSEN_PERSON,PERSIST_CHOSEN_PERSON_GROUPS,PERSIST_CHOSEN_GROUP} from '../types'
 
 
 export default (state, action) => {
@@ -13,5 +13,25 @@ export default (state, action) => {
                 ...state,
                 group : action.payload
             }
+            case PERSIST_CHOSEN_PERSON:
+            return {
+                ...state,
+                chosenPerson : action.payload
+            }
+            case PERSIST_CHOSEN_GROUP:
+                return {
+                    ...state,
+                    chosenGroup : action.payload
+                }
+            case PERSIST_CHOSEN_PERSON_GROUPS:
+            return{
+                ...state,
+                chosenPersonGroups: action.payload
+            }
+            case DELETE_CHOSEN_PERSON:
+                return {
+                    ...state,
+                    chosenPerson : null
+                }
     }
 }
