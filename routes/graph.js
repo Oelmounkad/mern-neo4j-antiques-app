@@ -1,7 +1,7 @@
 const express = require('express')
 
 const router = express.Router()
-var neo4j = require('neo4j-driver');//localhost
+var neo4j = require('neo4j-driver');//20.74.17.168
 var driver = neo4j.driver('bolt://20.74.17.168:7687', neo4j.auth.basic('neo4j', '37B9BECE2B'));
 //var session = driver.session();
 

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import { ResponsiveNeoGraph } from "./NeoGraph";
 import PersonContext from '../context/person/PersonContext'
 
-const NEO4J_URI = "bolt://20.74.17.168:7687"; //localhost
+const NEO4J_URI = "bolt://20.74.17.168:7687"; //20.74.17.168
 const NEO4J_USER = "neo4j";
 const NEO4J_PASSWORD = "37B9BECE2B";
 
