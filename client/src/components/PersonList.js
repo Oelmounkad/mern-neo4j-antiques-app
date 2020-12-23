@@ -6,7 +6,7 @@ const PersonList = () => {
 
 
     const personContext = useContext(PersonContext)
-    const {persons , getAllPersons,searchPersons,deleteChosenPerson} = personContext
+    const {persons , getAllPersons,searchPersons,deleteChosenPerson,deletePerson} = personContext
     const [searchString, setSearchString] = useState('')
 
 useEffect(() => {
@@ -27,18 +27,25 @@ const onSubmit = e => {
         <>
     <h2>Persons List :</h2>
 
-    <form onSubmit={onSubmit}>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Name</label>
+    <form className="form-inline" onSubmit={onSubmit}>
+
+  <div className="form-group">
     <input type="text" class="form-control" placeholder="Name" value={searchString} onChange={onChange} required/>
   </div>
-  <input type="submit" class="btn btn-primary" value="Search"/>
+
+  <div className="form-group" >
+      <input type="submit" class="btn btn-primary" value="Search"/>
+      </div>
+      <div className="form-group" >
+      <Link class="btn btn-success" to="/persons/add">Add Person</Link>
+      </div>
 </form>
+
 <br/>
         <div class="list-group">
-            {persons.map(person => 
-            <><Link class="list-group-item list-group-item-action list-group-item-dark" to={`/person/${person.identity.low}`}> 
-            {person.properties.name} ({person.properties.birth} - {person.properties.death})</Link> <br/></>)   }
+            {persons.map(person => <>
+            <div><Link class="list-group-item list-group-item-action list-group-item-dark" to={`/person/${person.identity.low}`}> 
+            {person.properties.name} ({person.properties.birth} - {person.properties.death})</Link> <button type="button" onClick={() => deletePerson(person.identity.low)} class="btn btn-danger">Delete</button> </div><br/></>)   }
         </div> 
 
         </>

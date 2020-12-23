@@ -10,11 +10,12 @@ const NEO4J_PASSWORD = "37B9BECE2B";
 const Group = props => {
     
     const personContext = useContext(PersonContext)
-    const {getGroupById,chosenGroup} = personContext
+    const {getGroupById,getGroupMembersByGroupId,chosenGroup,chosenGroupMembers} = personContext
     const { match: { params } } = props
 
     useEffect(() => {
       getGroupById(params.id)
+      getGroupMembersByGroupId(params.id)
     }, [])
 
   return (/*style={{ fontFamily: "Quicksand"}}*/
@@ -31,6 +32,34 @@ const Group = props => {
         init_cypher={`match(g:Group)-[r*0..]->(n) match(p:Person)-[w:WAS_MEMBER_IN*0..1]->(g) where id(g)=${params.id} return g,r,n,p,w`}
       /> 
       <br/>
+      <h4 className="underligned">Group Properties:</h4>
+      {chosenGroup.properties !== null && 
+  <div>
+    {Object.keys(chosenGroup.properties).map(key => (
+      <div> <strong> {key.charAt(0).toUpperCase() + key.slice(1)}</strong>: {chosenGroup.properties[key]}</div>
+    ))}
+  </div>
+}
+<br/>
+      <h4 className="underligned">Group Members:</h4>
+      {chosenGroupMembers !== null &&
+
+      chosenGroupMembers.map(cgm => 
+        <>
+      <div>
+        <h4><Link to={`/person/${cgm.identity.low}`}>{cgm.properties.name}</Link></h4>
+        <ul>
+          {Object.keys(cgm.properties).map(key => (
+      <li> <strong> {key.charAt(0).toUpperCase() + key.slice(1)}</strong>: {cgm.properties[key]}</li>
+    ))}
+        </ul>
+    
+  </div>
+  <br/>
+  </>
+  )
+  
+}
     </>
       }
      

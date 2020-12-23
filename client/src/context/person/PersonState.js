@@ -5,7 +5,8 @@ import axios from 'axios'
 import {GET_ALL_PERSONS,PERSIST_CHOSEN_PERSON,
         PERSIST_GROUP,DELETE_CHOSEN_PERSON,
         PERSIST_CHOSEN_PERSON_GROUPS,
-        PERSIST_CHOSEN_GROUP} from '../types'
+        PERSIST_CHOSEN_GROUP,PERSIST_CHOSEN_GROUP_MEMBERS,
+        DELETE_PERSON} from '../types'
 
 
 const PersonState = props => {
@@ -14,6 +15,7 @@ const initialState = {
     persons : [],
     chosenPerson: null,
     chosenGroup: null,
+    chosenGroupMembers: [],
     chosenPersonGroups: []
 }
 
@@ -106,7 +108,19 @@ const getGroupById = async id => {
        console.log(err)
     }
 }
-
+// get chosen group members
+const getGroupMembersByGroupId = async id => {
+    try {
+        const res = await axios.get(`/api/graph/groups/${id}/members`)
+        console.log("from action getgroup by id : ",res.data)
+        dispatch({
+            type: PERSIST_CHOSEN_GROUP_MEMBERS,
+            payload: res.data
+        })
+    } catch (err) {
+       console.log(err)
+    }
+}
  // Delete chosen person
  const deleteChosenPerson =  () => {
     try {
@@ -119,6 +133,30 @@ const getGroupById = async id => {
 }
 
 
+ // add Person
+ const addPerson = async person => {
+    try { 
+        console.log('from actions add person',person)
+        await axios.post(`/api/graph/persons`,person)
+       
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+// delete Person
+const deletePerson = async id => {
+    try { 
+        console.log('from actions delete person',id)
+        await axios.delete(`/api/graph/persons/${id}`)
+       dispatch({
+        type: DELETE_PERSON,
+        payload: id
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
 
     return (
         <PersonContext.Provider value={{
@@ -126,13 +164,17 @@ const getGroupById = async id => {
             chosenPerson: state.chosenPerson,
             chosenPersonGroups: state.chosenPersonGroups,
             chosenGroup: state.chosenGroup,
+            chosenGroupMembers: state.chosenGroupMembers,
             getGroup,
             getAllPersons,
             searchPersons,
             getPersonById,
             getGroupsByPersonId,
             deleteChosenPerson,
-            getGroupById
+            getGroupById,
+            getGroupMembersByGroupId,
+            addPerson,
+            deletePerson
         }}>
             {props.children}
         </PersonContext.Provider>

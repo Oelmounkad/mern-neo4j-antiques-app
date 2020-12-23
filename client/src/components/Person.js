@@ -32,22 +32,22 @@ const Person = props => {
         init_cypher={`match(p:Person)-[r*0..]->(g) where id(p)=${params.id} return p,r,g`}
       /> 
       <br/>
-      <h5>Person Properties:---------------------------------------</h5>
+      <h4 className="underligned">Person Properties:</h4>
       {chosenPerson.properties !== null && 
-  <div>
+  <ul>
     {Object.keys(chosenPerson.properties).map(key => (
-      <div> <strong> {key.charAt(0).toUpperCase() + key.slice(1)}</strong>: {chosenPerson.properties[key]}</div>
+      <li> <strong> {key.charAt(0).toUpperCase() + key.slice(1)}</strong>: {chosenPerson.properties[key]}</li>
     ))}
-  </div>
+  </ul>
 }
-{chosenPersonGroups !== null && 
-      <>
-      <h5>Groups he participated in :</h5>
+{chosenPersonGroups.length !== 0 ?
+      (<>
+      <h4 className="underligned">Participated in :</h4>
         {
-          chosenPersonGroups.map(group => <> <Link to={`/group/${group.identity.low}`}>{group.properties.label}</Link> <br/> </>)
+          chosenPersonGroups.map(group => <> <h5> <Link to={`/group/${group.identity.low}`}>{group.properties.label}</Link></h5> <br/> </>)
         }
 
-      </>
+      </>) : <h4 style={{color: 'red'}}>No groups found for {chosenPerson.properties.name} !</h4>
       }
        
        </>

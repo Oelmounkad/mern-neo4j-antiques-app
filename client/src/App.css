@@ -1,3 +1,9 @@
+*{
+margin-left: 2px
+}
+.underligned{
+  text-decoration: underline
+}
 .App {
   text-align: center;
 }

@@ -105,7 +105,10 @@ const NeoGraph = (props) => {
         },
         "IN_LOCATION":{
           thickness: "10"
-          }
+          },
+          "FATHER_OF":{
+            thickness: "10"
+            }
       },
 	  arrows: true,
       initial_cypher:

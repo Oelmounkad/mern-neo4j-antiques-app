@@ -15,10 +15,11 @@ function App() {
       <Switch>
 
           <Route exact path="/" component={PersonList} />
+          <Route exact path="/persons" component={PersonList} />
           <Route exact path="/person/:id" component={Person} />
           <Route exact path="/group/:id" component={Group} />
 
-          <Route exact path="/person/add" component={AddPerson} />
+          <Route exact path="/persons/add" component={AddPerson} />
 
       </Switch>
 

@@ -31,6 +31,22 @@ var session = driver.session();
 
 })
 
+// Add Person
+router.post('/persons',async (req,res) => {
+  const {name,gender,birth,death} = req.body
+
+  const query = `Create(n:Person {name: "${name}", gender: "${gender}", birth: "${birth}",death: "${death}"})`
+
+
+var session = driver.session();
+  session.run(query)
+  .then(res.send("Person added"))
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
+
 router.get('/persons/:id',async (req,res) => {
   const query = `MATCH (n:Person) where id(n)=${req.params.id} return n`
 
@@ -53,6 +69,20 @@ var session = driver.session();
   
 })
 
+router.delete('/persons/:id',async (req,res) => {
+  const query = `MATCH (n:Person) where id(n)=${req.params.id} delete n`
+
+var session = driver.session();
+  session.run(query)
+  .then(
+    res.send("Person deleted")
+  )
+  .catch(function(error) {
+    console.log(error);
+  });
+
+})
+
 
 router.get('/groups/:id',async (req,res) => {
   const query = `MATCH (n:Group) where id(n)=${req.params.id} return n`
@@ -73,7 +103,28 @@ var session = driver.session();
   });
   
 })
+// group by id members
+router.get('/groups/:id/members',async (req,res) => {
+  const query = `MATCH (n:Group)<-[:WAS_MEMBER_IN]-(p:Person) where id(n)=${req.params.id} return p`
 
+const params = {"limit": 10};
+let members = []
+
+var session = driver.session();
+  session.run(query, params)
+  .then(function(result) {
+    result.records.forEach(function(record) {
+       console.log(record._fields[0]);
+       members.push(record._fields[0])
+    })
+     res.json(members)
+    
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
 
 
 

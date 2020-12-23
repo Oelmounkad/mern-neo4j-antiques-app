@@ -9,6 +9,8 @@ const path = require('path')
 // PORT
 const PORT = process.env.PORT || 4000 
 
+//Init Middleware
+app.use(express.json({extended:true}))
 
 // Users routes
 app.use('/api/persons',require('./routes/persons'))
