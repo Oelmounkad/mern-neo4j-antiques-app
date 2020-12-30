@@ -5,6 +5,8 @@ import PersonState from './context/person/PersonState';
 import Group from './components/Group';
 import Person from './components/Person';
 import AddPerson from './components/AddPerson';
+import AddResource from './components/AddResource';
+import AddGroup from './components/AddGroup';
 
 
 function App() {
@@ -20,6 +22,9 @@ function App() {
           <Route exact path="/group/:id" component={Group} />
 
           <Route exact path="/persons/add" component={AddPerson} />
+          <Route exact path="/groups/add" component={AddGroup} />
+
+          <Route exact path="/add" component={AddResource} />
 
       </Switch>
 

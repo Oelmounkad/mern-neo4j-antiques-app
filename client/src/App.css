@@ -1,8 +1,38 @@
 *{
-margin-left: 2px
+margin-left: 2px;
+}
+body{
+  background-color: #e0e0e0;
+}
+.hr2 {
+  border: none;
+  height: 1px;
+  /* Set the hr color */
+  color: #333; /* old IE */
+  background-color: #333; /* Modern Browsers */
+}
+.hr1 {
+  border: none;
+  height: 2px;
+  /* Set the hr color */
+  color: #333; /* old IE */
+  background-color: #333; /* Modern Browsers */
 }
 .underligned{
   text-decoration: underline
+}
+.subprocess{
+  color:#3f51b5;
+  margin-left: 15px;
+}
+.event{
+  color: #2196f3;
+  margin-left: 40px
+}
+
+.source{
+  color:#3f51b5;
+  margin-left: 15px;
 }
 .App {
   text-align: center;

@@ -3,26 +3,28 @@ import {Link} from 'react-router-dom'
 import { ResponsiveNeoGraph } from "./NeoGraph";
 import PersonContext from '../context/person/PersonContext'
 
-const NEO4J_URI = "bolt://20.74.17.168:7687"; //20.74.17.168
+
+const NEO4J_URI = "bolt://54.172.13.65:32824"; //20.74.17.168
 const NEO4J_USER = "neo4j";
-const NEO4J_PASSWORD = "37B9BECE2B";
+const NEO4J_PASSWORD = "cams-pushes-headers";
 
 const Person = props => {
     
     const personContext = useContext(PersonContext)
-    const {getPersonById,getGroupsByPersonId,chosenPerson,chosenPersonGroups} = personContext
+    const {getPersonById,getGroupsByPersonId,getNamesByPersonId,chosenPerson,chosenPersonGroups,chosenPersonNames} = personContext
     const { match: { params } } = props
 
     useEffect(() => {
         getPersonById(params.id)
         getGroupsByPersonId(params.id)
+        getNamesByPersonId(params.id)
     }, [])
 
   return (/*style={{ fontFamily: "Quicksand"}}*/
-    <>
+    <div style={{ fontFamily: "Quicksand"}}>
         {chosenPerson !== null && 
         <>
-      <h1 style={{ fontFamily: "Quicksand"}}>{chosenPerson.properties.name} ({chosenPerson.properties.birth} - {chosenPerson.properties.death})</h1>
+      <h1>{chosenPerson.properties.name} ({chosenPerson.properties.birth} - {chosenPerson.properties.death})</h1>
 
         <ResponsiveNeoGraph
         containerId={"id0"}
@@ -40,6 +42,7 @@ const Person = props => {
     ))}
   </ul>
 }
+<hr className="hr1" />
 {chosenPersonGroups.length !== 0 ?
       (<>
       <h4 className="underligned">Participated in :</h4>
@@ -49,12 +52,52 @@ const Person = props => {
 
       </>) : <h4 style={{color: 'red'}}>No groups found for {chosenPerson.properties.name} !</h4>
       }
-       
+      <hr className="hr1" />
+
+
+      {chosenPersonNames && chosenPersonNames[0] && chosenPersonNames[0].names.length !== 0 && <>
+    <h4 className="underligned">Names:</h4>
+    {chosenPersonNames.map(f => f.names.map(name => 
+      <>
+    <div>
+      <h4>+{name.node.properties.name}</h4>
+      <h6 className="underligned">Properties:</h6>
+      <ul>
+        {Object.keys(name.node.properties).map(key => (
+    <li> <strong> {key.charAt(0).toUpperCase() + key.slice(1)}</strong>: {name.node.properties[key]}</li>
+  ))}
+      </ul>
+  
+</div>                  
+
+          {name.sources.length !== 0 && <>
+           <h5 className="underligned">Sources:</h5>
+           {name.sources.map(source => 
+            
+                <div className="source">
+                      <h4>+{source.node.properties.book}</h4>
+                      <h6 className="underligned">Properties:</h6>
+                      <ul>
+                        {Object.keys(source.node.properties).map(key => (
+                    <li> <strong> {key.charAt(0).toUpperCase() + key.slice(1)}</strong>: {source.node.properties[key]}</li>
+                  ))}
+                      </ul>
+                  
+                </div>  
+            )}
+            </>
+            }
+
+<hr className="hr2" />
+</>
+))
+  
+} </> }
        </>
       }
      
 
-    </>
+    </div>
   );
 };
 

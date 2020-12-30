@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 var neo4j = require('neo4j-driver');//20.74.17.168
-var driver = neo4j.driver('bolt://20.74.17.168:7687', neo4j.auth.basic('neo4j', '37B9BECE2B'));
+var driver = neo4j.driver('bolt://54.172.13.65:32824', neo4j.auth.basic('neo4j', 'cams-pushes-headers'));
 //var session = driver.session();
 
 router.get('/persons',async (req,res) => {
@@ -127,7 +127,39 @@ var session = driver.session();
 })
 
 
+// group by id processes / sub-processes / events
+router.get('/groups/:id/processes',async (req,res) => {
+  const query = `MATCH (g:Group) where id(g) = ${req.params.id}
+  RETURN {
+  processes: [(g)-[:DID_PROCESS]->(process) | 
+      {
+       node: process, 
+       subprocesses: [(process)-[:SUB_PROCESS]->(sub) | 
+            {node: sub, events: [(sub)-[:HAS_EVENT]->(event) | event]}
+         ]
+      }
+    ]
+  }`
 
+const params = {"limit": 10};
+//let records = []
+
+var session = driver.session();
+  session.run(query, params)
+  .then(function(result) {
+    result.records.forEach(function(record) {
+       console.log(record._fields);
+      // records.push(record._fields) 
+       res.json(record._fields) 
+    })
+    
+    
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
 
 router.get('/persons/:id/groups',async (req,res) => {
 
@@ -151,6 +183,38 @@ var session = driver.session();
   
 })
 
+router.get('/persons/:id/names',async (req,res) => {
+
+  /* getting names of person(id) */
+  const query = `MATCH (p:Person) where id(p) = ${req.params.id}
+  RETURN {
+  names: [(p)-[:NAMED]->(name) | 
+      {
+       node: name, 
+       sources: [(name)-[:ACCORDING_TO]->(source) | 
+            {node: source}
+         ]
+      }
+    ]
+  }`
+  
+  const params = {"limit": 10};
+  //let names = []
+  var session = driver.session();
+    session.run(query, params)
+    .then(function(result) {
+      result.records.forEach(function(record) {
+         console.log(record._fields[0]);
+         //names.push(record._fields[0])
+         res.json(record._fields)
+      })
+      
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+    
+  })
 
 
 router.get('/persons/byname/:name',async (req,res) => {

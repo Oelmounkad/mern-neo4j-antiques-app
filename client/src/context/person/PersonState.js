@@ -5,8 +5,12 @@ import axios from 'axios'
 import {GET_ALL_PERSONS,PERSIST_CHOSEN_PERSON,
         PERSIST_GROUP,DELETE_CHOSEN_PERSON,
         PERSIST_CHOSEN_PERSON_GROUPS,
+        PERSIST_CHOSEN_PERSON_NAMES,
         PERSIST_CHOSEN_GROUP,PERSIST_CHOSEN_GROUP_MEMBERS,
-        DELETE_PERSON} from '../types'
+        PERSIST_CHOSEN_GROUP_PROCESSES,
+        DELETE_PERSON,
+        PERSIST_MEMBERS,
+        FILTER_MEMBERS} from '../types'
 
 
 const PersonState = props => {
@@ -16,7 +20,12 @@ const initialState = {
     chosenPerson: null,
     chosenGroup: null,
     chosenGroupMembers: [],
-    chosenPersonGroups: []
+    chosenGroupProcesses: [],
+    chosenPersonGroups: [],
+    chosenPersonNames: [],
+    createGroupMembers: [],
+    members: [],
+    members2: []
 }
 
 const [state, dispatch] = useReducer(PersonReducer, initialState)
@@ -94,6 +103,20 @@ const [state, dispatch] = useReducer(PersonReducer, initialState)
     }
 }
 
+ // Get Names by Person id (chosenPersonNames)
+ const getNamesByPersonId = async (id) => {
+    try {
+        const res = await axios.get(`/api/graph/persons/${id}/names`)
+        console.log("from action getnames of personbyid : ",res.data)
+        dispatch({
+            type: PERSIST_CHOSEN_PERSON_NAMES,
+            payload: res.data
+        })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
 //get group by id
 
 const getGroupById = async id => {
@@ -121,6 +144,21 @@ const getGroupMembersByGroupId = async id => {
        console.log(err)
     }
 }
+
+// get chosen group processes
+const getGroupProcessesByGroupId = async id => {
+    try {
+        const res = await axios.get(`/api/graph/groups/${id}/processes`)
+        console.log("from action getgroup by id processes : ",res.data)
+        dispatch({
+            type: PERSIST_CHOSEN_GROUP_PROCESSES,
+            payload: res.data
+        })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
  // Delete chosen person
  const deleteChosenPerson =  () => {
     try {
@@ -158,6 +196,29 @@ const deletePerson = async id => {
     }
 }
 
+
+// create group page members
+
+const getMembers = async () => {
+    try { 
+        console.log('from actions get members')
+        const res = await axios.get(`/api/graph/persons`)
+       dispatch({
+        type: PERSIST_MEMBERS,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+  // Filter Members
+
+  const filterMembers = text => {
+    dispatch({type: FILTER_MEMBERS , payload: text })
+}
+
+
     return (
         <PersonContext.Provider value={{
             persons: state.persons,
@@ -165,16 +226,24 @@ const deletePerson = async id => {
             chosenPersonGroups: state.chosenPersonGroups,
             chosenGroup: state.chosenGroup,
             chosenGroupMembers: state.chosenGroupMembers,
+            chosenGroupProcesses: state.chosenGroupProcesses,
+            chosenPersonNames: state.chosenPersonNames,
+            members: state.members,
+            members2: state.members2,
             getGroup,
             getAllPersons,
             searchPersons,
             getPersonById,
+            getNamesByPersonId,
             getGroupsByPersonId,
             deleteChosenPerson,
             getGroupById,
             getGroupMembersByGroupId,
+            getGroupProcessesByGroupId,
             addPerson,
-            deletePerson
+            deletePerson,
+            getMembers,
+            filterMembers
         }}>
             {props.children}
         </PersonContext.Provider>
