@@ -69,6 +69,21 @@ var session = driver.session();
   
 })
 
+router.put('/persons/:id',async (req,res) => {
+  const {name,gender,birth,death} = req.body
+  const query = `MATCH (n:Person) where id(n)=${req.params.id} set n.label="${name}" , n.name="${name}", n.gender="${gender}", n.birth="${birth}", n.death="${death}"`
+
+var session = driver.session();
+  session.run(query)
+  .then(
+    res.send("Person updated")
+  )
+  .catch(function(error) {
+    console.log(error);
+  });
+
+})
+
 router.delete('/persons/:id',async (req,res) => {
   const query = `MATCH (n:Person) where id(n)=${req.params.id} detach delete n`
 

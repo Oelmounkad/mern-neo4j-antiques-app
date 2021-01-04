@@ -204,6 +204,15 @@ const deletePerson = async id => {
     }
 }
 
+// Edit Person
+const editPerson = async (id,person) => {
+    try { 
+        console.log('from actions delete person',id)
+        await axios.put(`/api/graph/persons/${id}`,person)
+    } catch (err) {
+       console.log(err)
+    }
+}
 
 // create group page members
 
@@ -334,7 +343,8 @@ const connectGroupProcess = async data => {
             filterGroups,
             getProcesses,
             filterProcesses,
-            connectGroupProcess
+            connectGroupProcess,
+            editPerson
         }}>
             {props.children}
         </PersonContext.Provider>

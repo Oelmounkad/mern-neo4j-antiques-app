@@ -9,6 +9,7 @@ import AddResource from './components/AddResource';
 import AddGroup from './components/AddGroup';
 import AddProcess from './components/AddProcess';
 import ConnectGroupProcess from './components/ConnectGroupProcess';
+import EditPerson from './components/EditPerson';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/group/:id" component={Group} />
           
           <Route exact path="/persons/add" component={AddPerson} />
+          <Route exact path="/persons/:id/edit" component={EditPerson} />
           <Route exact path="/groups/add" component={AddGroup} />
           <Route exact path="/processes/add" component={AddProcess} />
 

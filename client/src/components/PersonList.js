@@ -55,7 +55,7 @@ const onSubmit = e => {
         <div class="list-group">
             {persons.map(person => <>
             <div><Link class="list-group-item list-group-item-action list-group-item-dark" to={`/person/${person.identity.low}`}> 
-            {person.properties.name} ({person.properties.birth} - {person.properties.death})</Link> <button type="button" onClick={() => deletePerson(person.identity.low)} class="btn btn-danger">Delete</button> </div><br/></>)   }
+            {person.properties.name} ({person.properties.birth} - {person.properties.death})</Link> <button type="button" onClick={() => deletePerson(person.identity.low)} class="btn btn-danger">Delete</button> <Link to={`/persons/${person.identity.low}/edit`} class="btn btn-warning">Edit</Link></div><br/></>)   }
         </div> 
 
         </>
