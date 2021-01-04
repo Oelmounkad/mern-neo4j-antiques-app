@@ -2,12 +2,12 @@ import React,{useEffect,useRef,useState,useContext} from 'react'
 import PersonContext from '../context/person/PersonContext'
 
 
-const ConnectGroupProcess = () => {
+const ConnectGroupProcess = props => {
 
     const personContext = useContext(PersonContext)
     const {connectGroups,connectGroups2,connectProcesses,connectProcesses2,
             getGroups,getProcesses,filterGroups,
-            filterProcesses} = personContext
+            filterProcesses,connectGroupProcess} = personContext
 
     const text1 = useRef('')
     const text2 = useRef('')
@@ -53,11 +53,30 @@ const ConnectGroupProcess = () => {
     const resetGroup = () => {
         setGroup('')
     }
+
+    const onSubmit = e => {
+        e.preventDefault()
+        const groupInt = parseInt(group)
+        const processesInt = processes.map(e => parseInt(e))
+        const data = {
+            group:groupInt,
+            processes:processesInt
+        }
+        if(group !== '' && processes.length !== 0){
+            connectGroupProcess(data)
+            setTimeout(() => {
+                props.history.push('/')
+           }, 1000);
+        }else{
+            alert("fill the group and the processes!!")
+        }
+    }
+
     return (
         <>
         <h2>Connect a Group to a process:</h2>
 
-        <form >
+        <form onSubmit={onSubmit}>
 
 
   <div class="form-group">

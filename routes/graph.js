@@ -70,7 +70,7 @@ var session = driver.session();
 })
 
 router.delete('/persons/:id',async (req,res) => {
-  const query = `MATCH (n:Person) where id(n)=${req.params.id} delete n`
+  const query = `MATCH (n:Person) where id(n)=${req.params.id} detach delete n`
 
 var session = driver.session();
   session.run(query)
@@ -355,5 +355,26 @@ var session = driver.session();
 
 })
 
+router.post('/connect/processgroup',async (req,res) => {
+  const {group,processes} = req.body
+
+  for (let i = 0; i < processes.length; i++) {
+    /**Heere */
+    query = `MATCH (n:Group) where id(n)=${group} Match (p:Process) where id(p)=${processes[i]} merge (n)-[:DID_PROCESS]->(p)`
+                                        
+    var session2 = driver.session();
+      session2.run(query)
+      .then(function(result) {
+        result.records.forEach(function(record) {
+          console.log(record._fields[0])
+        })
+    
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+        /**heere */
+}  
+})
 
 module.exports = router

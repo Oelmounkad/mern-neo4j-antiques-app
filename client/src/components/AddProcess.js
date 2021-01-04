@@ -42,7 +42,7 @@ const AddProcess = props => {
 
         setTimeout(() => {
              props.history.push('/')
-        }, 2000);
+        }, 1000);
        
     }
 

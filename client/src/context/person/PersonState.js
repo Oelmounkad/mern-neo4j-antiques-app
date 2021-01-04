@@ -288,6 +288,16 @@ const createProcess = async data => {
     }
 }
 
+// Connect group / process
+const connectGroupProcess = async data => {
+    try { 
+        console.log('from actions connect Group Process')
+        await axios.post(`/api/graph/connect/processgroup`,data)
+    } catch (err) {
+       console.log(err)
+    }
+}
+
 
     return (
         <PersonContext.Provider value={{
@@ -323,7 +333,8 @@ const createProcess = async data => {
             getGroups,
             filterGroups,
             getProcesses,
-            filterProcesses
+            filterProcesses,
+            connectGroupProcess
         }}>
             {props.children}
         </PersonContext.Provider>
