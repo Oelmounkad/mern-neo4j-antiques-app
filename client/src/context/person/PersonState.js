@@ -10,7 +10,11 @@ import {GET_ALL_PERSONS,PERSIST_CHOSEN_PERSON,
         PERSIST_CHOSEN_GROUP_PROCESSES,
         DELETE_PERSON,
         PERSIST_MEMBERS,
-        FILTER_MEMBERS} from '../types'
+        FILTER_MEMBERS,
+        PERSIST_GROUPS,
+        PERSIST_PROCESSES,
+        FILTER_GROUPS,
+        FILTER_PROCESSES} from '../types'
 
 
 const PersonState = props => {
@@ -25,7 +29,11 @@ const initialState = {
     chosenPersonNames: [],
     createGroupMembers: [],
     members: [],
-    members2: []
+    members2: [],
+    connectGroups: [],
+    connectGroups2: [],
+    connectProcesses: [],
+    connectProcesses2: []
 }
 
 const [state, dispatch] = useReducer(PersonReducer, initialState)
@@ -212,10 +220,72 @@ const getMembers = async () => {
     }
 }
 
+
+// connect group process get groups
+
+const getGroups = async () => {
+    try { 
+        console.log('from actions get groups')
+        const res = await axios.get(`/api/graph/groups`)
+       dispatch({
+        type: PERSIST_GROUPS,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+const getProcesses = async () => {
+    try { 
+        console.log('from actions get groups')
+        const res = await axios.get(`/api/graph/processes`)
+       dispatch({
+        type: PERSIST_PROCESSES,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
   // Filter Members
 
   const filterMembers = text => {
     dispatch({type: FILTER_MEMBERS , payload: text })
+}
+
+  // Filter Groups
+
+  const filterGroups = text => {
+    dispatch({type: FILTER_GROUPS , payload: text })
+}
+
+  // Filter Processes
+
+  const filterProcesses = text => {
+    dispatch({type: FILTER_PROCESSES , payload: text })
+}
+
+
+// Create Group
+const createGroup = async data => {
+    try { 
+        console.log('from actions create Group')
+        await axios.post(`/api/graph/groups`,data)
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+// Create Process
+const createProcess = async data => {
+    try { 
+        console.log('from actions create Process')
+        await axios.post(`/api/graph/processes`,data)
+    } catch (err) {
+       console.log(err)
+    }
 }
 
 
@@ -230,6 +300,10 @@ const getMembers = async () => {
             chosenPersonNames: state.chosenPersonNames,
             members: state.members,
             members2: state.members2,
+            connectGroups: state.connectGroups,
+            connectGroups2: state.connectGroups2,
+            connectProcesses: state.connectProcesses,
+            connectProcesses2: state.connectProcesses2,
             getGroup,
             getAllPersons,
             searchPersons,
@@ -243,7 +317,13 @@ const getMembers = async () => {
             addPerson,
             deletePerson,
             getMembers,
-            filterMembers
+            filterMembers,
+            createGroup,
+            createProcess,
+            getGroups,
+            filterGroups,
+            getProcesses,
+            filterProcesses
         }}>
             {props.children}
         </PersonContext.Provider>

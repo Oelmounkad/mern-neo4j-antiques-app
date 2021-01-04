@@ -37,7 +37,17 @@ const onSubmit = e => {
       <input type="submit" class="btn btn-primary" value="Search"/>
       </div>
       <div className="form-group" >
-      <Link class="btn btn-success" to="/persons/add">Add Person</Link>
+      <Link class="btn btn-outline-success" to="/persons/add">Add Person</Link>
+      </div>
+      <div className="form-group" >
+      <Link class="btn btn-outline-success" to="/groups/add">Add Group</Link>
+      </div>
+      <div className="form-group" >
+      <Link class="btn btn-outline-success" to="/processes/add">Add Process</Link>
+      </div>
+
+      <div className="form-group" >
+      <Link class="btn btn-outline-success" to="/connect/group-process">Connect Grp-Process</Link>
       </div>
 </form>
 

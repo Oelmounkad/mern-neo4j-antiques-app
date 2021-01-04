@@ -4,9 +4,9 @@ import { ResponsiveNeoGraph } from "./NeoGraph";
 import PersonContext from '../context/person/PersonContext'
 
 
-const NEO4J_URI = "bolt://54.172.13.65:32824"; //20.74.17.168
+const NEO4J_URI = "bolt://54.172.13.65:33092"; //20.74.17.168
 const NEO4J_USER = "neo4j";
-const NEO4J_PASSWORD = "cams-pushes-headers";
+const NEO4J_PASSWORD = "nickel-resident-confusions";
 
 const Person = props => {
     

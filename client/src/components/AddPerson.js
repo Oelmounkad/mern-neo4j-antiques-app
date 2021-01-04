@@ -41,6 +41,7 @@ const AddPerson = props => {
     <select class="form-control" value={person.gender} name="gender" onChange={onChange}>
       <option value="Male">Male</option>
       <option value="Female">Female</option>
+      <option value="...">Not defined</option>
     </select>
   </div>
 

@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 var neo4j = require('neo4j-driver');//20.74.17.168
-var driver = neo4j.driver('bolt://54.172.13.65:32824', neo4j.auth.basic('neo4j', 'cams-pushes-headers'));
+var driver = neo4j.driver('bolt://54.172.13.65:33092', neo4j.auth.basic('neo4j', 'nickel-resident-confusions'));
 //var session = driver.session();
 
 router.get('/persons',async (req,res) => {
@@ -35,7 +35,7 @@ var session = driver.session();
 router.post('/persons',async (req,res) => {
   const {name,gender,birth,death} = req.body
 
-  const query = `Create(n:Person {name: "${name}", gender: "${gender}", birth: "${birth}",death: "${death}"})`
+  const query = `Create(n:Person {label: "${name}",name: "${name}", gender: "${gender}", birth: "${birth}",death: "${death}"})`
 
 
 var session = driver.session();
@@ -83,6 +83,70 @@ var session = driver.session();
 
 })
 
+
+router.get('/groups',async (req,res) => {
+
+const query1 = `Match (n:Group) return n`
+let records = []
+const params = {"limit": 10};
+var session = driver.session();
+  session.run(query1, params)
+  .then(function(result) {
+    result.records.forEach(function(record) {
+      console.log(record._fields[0]);
+      records.push(record._fields[0])
+   })
+   res.json(records)
+
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+})
+
+
+router.post('/groups',async (req,res) => {
+  const {label,members} = req.body
+
+const query1 = `Create (n:Group {label:"${label}"}) return id(n)`
+
+const params = {"limit": 10};
+var session = driver.session();
+  session.run(query1, params)
+  .then(function(result) {
+    result.records.forEach(function(record) {
+       console.log(record._fields[0].low);
+       let query2
+       for (let i = 0; i < members.length; i++) {
+          /**Heere */
+           query2 = `MATCH (n:Person) where id(n)=${members[i]} Match (g:Group) where id(g)=${record._fields[0].low} merge (n)-[:WAS_MEMBER_IN]->(g)`
+                                              
+          var session2 = driver.session();
+            session2.run(query2)
+            .then(function(result) {
+              result.records.forEach(function(record) {
+                console.log(record._fields[0])
+              })
+          
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+              /**heere */
+         
+       }
+                                                 
+       res.json(record)
+    })
+
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+
+
+})
 
 router.get('/groups/:id',async (req,res) => {
   const query = `MATCH (n:Group) where id(n)=${req.params.id} return n`
@@ -231,6 +295,59 @@ router.get('/persons/byname/:name',async (req,res) => {
        records.push(record._fields[0])
     })
     res.json(records)
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+})
+
+router.get('/processes',async (req,res) => {
+
+  const query1 = `Match (n:Process) return n`
+  let records = []
+  const params = {"limit": 10};
+  var session = driver.session();
+    session.run(query1, params)
+    .then(function(result) {
+      result.records.forEach(function(record) {
+        console.log(record._fields[0]);
+        records.push(record._fields[0])
+     })
+     res.json(records)
+  
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  })
+
+router.post('/processes',async (req,res) => {
+  const {process,source} = req.body
+ /* let pullreasons
+  let pushreasons
+if(process.pullreasons !== ""){
+  pullreasons = process.pullreasons.split(',')
+}
+if(process.pushreasons !== ""){
+  pushreasons = process.pushreasons.split(',')
+}
+for (let i = 0; i < pullreasons.length; i++) {
+  const element = pullreasons[i];
+  
+}*/
+
+const query1 = `Create (n:Process {label:"${process.label}",type:"${process.type}",fromLocation:"${process.from}",toLocation:"${process.to}",pushReasons:"${process.pushreasons}",pullReasons:"${process.pullreasons}"}) create(t:Timespan {label:"${process.timeFrom + '-'+process.timeTo}",from:"${process.timeFrom}",to:"${process.timeTo}"}) create(s:Source {label:"${source.book + ' , '+source.page}",book:"${source.book}",page:"${source.page}"}) merge (n)-[:IN_TIME]->(t)-[:ACCORDING_TO]->(s) return id(n)`
+
+const params = {"limit": 10};
+var session = driver.session();
+  session.run(query1, params)
+  .then(function(result) {
+    result.records.forEach(function(record) {
+       console.log(record._fields[0].low);                                     
+       res.json(record._fields[0].low)
+    })
+
   })
   .catch(function(error) {
     console.log(error);

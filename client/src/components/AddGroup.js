@@ -4,7 +4,7 @@ import PersonContext from '../context/person/PersonContext'
 const AddGroup = () => {
 
     const personContext = useContext(PersonContext)
-    const {members,members2,getMembers,filterMembers} = personContext
+    const {members,members2,getMembers,filterMembers,createGroup} = personContext
 
     const [group, setGroup] = useState('')
     const [test, setTest] = useState([])
@@ -37,6 +37,17 @@ const resetSelect = () => {
     const onSubmit = e => {
         e.preventDefault()
         console.log("test : "+test)
+        const members = test.map(e => parseInt(e))
+        const data = {
+            label:group,
+            members
+        }
+        console.log('daaaata: ',data)
+        if(members.length == 0){
+            alert("Add members to the group !!")
+        }else{
+            createGroup(data)
+        }
         
     }
 

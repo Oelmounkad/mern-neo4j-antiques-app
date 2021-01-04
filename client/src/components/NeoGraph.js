@@ -30,7 +30,7 @@ const NeoGraph = (props) => {
                 font: '20px arial red',
             },
             "Name":{
-				caption: "name",
+				caption: "label",
                 size: 0.5,
                 font: '15px arial black'
             },
@@ -65,7 +65,7 @@ const NeoGraph = (props) => {
                 font: '15px arial black'
             },
       	    "Source":{
-				        caption: "book",
+				        caption: "label",
                 size: 0.5,
                 font: '15px arial black'
             },
