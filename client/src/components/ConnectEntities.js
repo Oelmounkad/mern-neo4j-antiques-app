@@ -72,8 +72,8 @@ const ConnectEntities = () => {
         <div class="form-group">
         <label>Value</label>
           <select class="form-control" id="members" value={entity1} onChange={onChangeEntity1} multiple={false}>
-        {entities1.length !== 0 && entities1.map(en => 
-            <option value={en.identity.low}>{en.properties.label}</option>
+        {entities1.length !== 0 && entities1.map(f => 
+            <option value={f.identity.low}>{f.properties.label}</option>
             )}
             <option value=""></option>
     </select>
