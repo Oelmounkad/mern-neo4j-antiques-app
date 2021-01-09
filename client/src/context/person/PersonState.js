@@ -14,7 +14,12 @@ import {GET_ALL_PERSONS,PERSIST_CHOSEN_PERSON,
         PERSIST_GROUPS,
         PERSIST_PROCESSES,
         FILTER_GROUPS,
-        FILTER_PROCESSES} from '../types'
+        FILTER_PROCESSES,
+    PERSIST_ENTITIES1,
+PERSIST_ENTITIES2,
+PERSIST_ENTITY_LABELS1,
+PERSIST_ENTITY_LABELS2,
+PERSIST_RELATIONSHIPS} from '../types'
 
 
 const PersonState = props => {
@@ -33,7 +38,12 @@ const initialState = {
     connectGroups: [],
     connectGroups2: [],
     connectProcesses: [],
-    connectProcesses2: []
+    connectProcesses2: [],
+    entities1:[],
+    entities2:[],
+    entities1labels:[],
+    entities2labels:[],
+    relationships:[]
 }
 
 const [state, dispatch] = useReducer(PersonReducer, initialState)
@@ -307,6 +317,84 @@ const connectGroupProcess = async data => {
     }
 }
 
+// Get entities 1
+
+const getEntities1 = async name => {
+    try { 
+        console.log('from actions get entities1')
+        const res = await axios.get(`/api/graph/entities/${name}`)
+       dispatch({
+        type: PERSIST_ENTITIES1,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+
+// Get entities 2
+
+const getEntities2 = async name => {
+    try { 
+        console.log('from actions get entities2')
+        const res = await axios.get(`/api/graph/entities/${name}`)
+       dispatch({
+        type: PERSIST_ENTITIES2,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+// Get entity 1 / 2 labels
+
+const getEntityLabels = async () => {
+    try { 
+        console.log('from actions get entity labels')
+        const res = await axios.get(`/api/graph/entities/labels`)
+       dispatch({
+        type: PERSIST_ENTITY_LABELS1,
+        payload: res.data
+       })
+       dispatch({
+        type: PERSIST_ENTITY_LABELS2,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+// get relationships
+
+const getRelationships = async () => {
+    try { 
+        console.log('from actions get entity labels')
+        const res = await axios.get(`/api/graph/relationships`)
+       dispatch({
+        type: PERSIST_RELATIONSHIPS,
+        payload: res.data
+       })
+
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+// Connect two entities
+
+const connectTwoEntities = async (data) => {
+    try { 
+        console.log('from actions connect two entities')
+        await axios.post(`/api/graph/connect/general`,data)
+
+    } catch (err) {
+       console.log(err)
+    }
+}
+
 
     return (
         <PersonContext.Provider value={{
@@ -323,6 +411,11 @@ const connectGroupProcess = async data => {
             connectGroups2: state.connectGroups2,
             connectProcesses: state.connectProcesses,
             connectProcesses2: state.connectProcesses2,
+            entities1: state.entities1,
+            entities2: state.entities2,
+            entities1labels: state.entities1labels,
+            entities2labels: state.entities2labels,
+            relationships: state.relationships,
             getGroup,
             getAllPersons,
             searchPersons,
@@ -344,7 +437,12 @@ const connectGroupProcess = async data => {
             getProcesses,
             filterProcesses,
             connectGroupProcess,
-            editPerson
+            editPerson,
+            getEntities1,
+            getEntities2,
+            getEntityLabels,
+            getRelationships,
+            connectTwoEntities
         }}>
             {props.children}
         </PersonContext.Provider>

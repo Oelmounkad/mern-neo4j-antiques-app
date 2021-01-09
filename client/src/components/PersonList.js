@@ -49,6 +49,10 @@ const onSubmit = e => {
       <div className="form-group" >
       <Link class="btn btn-outline-success" to="/connect/group-process">Connect Grp-Process</Link>
       </div>
+
+      <div className="form-group" >
+      <Link class="btn btn-outline-success" to="/connect/entities">Connect Everything</Link>
+      </div>
 </form>
 
 <br/>

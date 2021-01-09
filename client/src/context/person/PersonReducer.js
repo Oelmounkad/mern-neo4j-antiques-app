@@ -1,5 +1,5 @@
 import {GET_ALL_PERSONS,PERSIST_GROUP,PERSIST_CHOSEN_PERSON,DELETE_CHOSEN_PERSON,PERSIST_CHOSEN_PERSON_GROUPS,PERSIST_CHOSEN_GROUP,PERSIST_CHOSEN_GROUP_MEMBERS,
-    DELETE_PERSON,PERSIST_CHOSEN_GROUP_PROCESSES,PERSIST_CHOSEN_PERSON_NAMES,PERSIST_MEMBERS,FILTER_MEMBERS,PERSIST_GROUPS,PERSIST_PROCESSES,FILTER_GROUPS,FILTER_PROCESSES} from '../types'
+    DELETE_PERSON,PERSIST_CHOSEN_GROUP_PROCESSES,PERSIST_CHOSEN_PERSON_NAMES,PERSIST_MEMBERS,FILTER_MEMBERS,PERSIST_GROUPS,PERSIST_PROCESSES,FILTER_GROUPS,FILTER_PROCESSES,PERSIST_ENTITIES1,PERSIST_ENTITIES2,PERSIST_ENTITY_LABELS1,PERSIST_ENTITY_LABELS2,PERSIST_RELATIONSHIPS} from '../types'
 
 
 export default (state, action) => {
@@ -96,5 +96,30 @@ export default (state, action) => {
                     ...state,
                     chosenPerson : null
                 }
+            case PERSIST_ENTITIES1:
+                return {
+                        ...state,
+                        entities1 : action.payload
+                    }
+            case PERSIST_ENTITIES2:
+                return {
+                        ...state,
+                         entities2 : action.payload
+                       }   
+              case PERSIST_ENTITY_LABELS1:
+                return {
+                        ...state,
+                        entities1labels : action.payload
+                       }
+               case PERSIST_ENTITY_LABELS2:
+                return {
+                        ...state,
+                        entities2labels : action.payload
+                       }
+                       case PERSIST_RELATIONSHIPS:
+                        return {
+                                ...state,
+                                relationships : action.payload
+                               }
     }
 }

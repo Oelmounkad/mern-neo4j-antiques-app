@@ -370,6 +370,26 @@ var session = driver.session();
 
 })
 
+router.post('/connect/general',async (req,res) => {
+  const {lab1,ent1,lab2,ent2,rel} = req.body
+
+    query = `MATCH (n:${lab1}) where id(n)=${ent1} Match (p:${lab2}) where id(p)=${ent2} merge (n)-[:${rel}]->(p)`
+                                        
+    var session2 = driver.session();
+      session2.run(query)
+      .then(function(result) {
+        result.records.forEach(function(record) {
+          console.log(record._fields[0])
+        })
+    
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    })
+
+
 router.post('/connect/processgroup',async (req,res) => {
   const {group,processes} = req.body
 
@@ -391,5 +411,66 @@ router.post('/connect/processgroup',async (req,res) => {
         /**heere */
 }  
 })
+
+
+router.get('/entities/labels',async (req,res) => {
+
+  const query1 = `match(n) return distinct labels(n)`
+  let records = []
+  const params = {"limit": 10};
+  var session = driver.session();
+    session.run(query1, params)
+    .then(function(result) {
+      result.records.forEach(function(record) {
+        console.log(record._fields[0]);
+        records.push(record._fields[0])
+     })
+     res.json(records.flat())
+  
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  })
+
+router.get('/entities/:name',async (req,res) => {
+
+  const query1 = `Match (n:${req.params.name}) return n`
+  let records = []
+  const params = {"limit": 10};
+  var session = driver.session();
+    session.run(query1, params)
+    .then(function(result) {
+      result.records.forEach(function(record) {
+        console.log(record._fields[0]);
+        records.push(record._fields[0])
+     })
+     res.json(records)
+  
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  })
+
+  router.get('/relationships',async (req,res) => {
+
+    const query1 = `match(n)-[r]->(p) return distinct type(r)`
+    let records = []
+    const params = {"limit": 10};
+    var session = driver.session();
+      session.run(query1, params)
+      .then(function(result) {
+        result.records.forEach(function(record) {
+          console.log(record._fields[0]);
+          records.push(record._fields[0])
+       })
+       res.json(records.flat())
+    
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    })
 
 module.exports = router
