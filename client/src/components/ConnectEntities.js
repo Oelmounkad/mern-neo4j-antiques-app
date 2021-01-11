@@ -11,8 +11,8 @@ const ConnectEntities = () => {
         connectTwoEntities} = personContext
 
 
-    const [entities1label, setEntities1label] = useState('')
-    const [entities2label, setEntities2label] = useState('')
+    const [entities1label, setEntities1label] = useState('Person')
+    const [entities2label, setEntities2label] = useState('Person')
 
     const [entity1, setEntity1] = useState()
     const [entity2, setEntity2] = useState()
@@ -106,6 +106,7 @@ const ConnectEntities = () => {
                 {relationships.length !== 0 && relationships.map(rel => 
                     <option value={rel}>{rel}</option>
                     )}
+                    <option value=""></option>
             </select>
                 </div>
       
