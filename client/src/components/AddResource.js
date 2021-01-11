@@ -22,8 +22,8 @@ const AddResource = () => {
           <h1>Add new Resource:</h1>
           <form >
           <div class="form-group">
-            <label>Category Label</label>
-            <input type="text" class="form-control" placeholder="Category Label" value={categLabel} name="categLabel" onChange={onChangeCategLabel} required/>
+            <label>Category Name</label>
+            <input type="text" class="form-control" placeholder="Category Name" value={categLabel} name="categLabel" onChange={onChangeCategLabel} required/>
           </div>
           <div class="form-group">
             <label>Object Properties</label>
