@@ -2,7 +2,7 @@ import React,{useContext,useState,useEffect} from 'react'
 import PersonContext from '../context/person/PersonContext'
 
 
-const ConnectEntities = () => {
+const ConnectEntities = props => {
 
     const personContext = useContext(PersonContext)
     const {entities1,entities2,entities1labels,entities2labels,
@@ -14,11 +14,14 @@ const ConnectEntities = () => {
     const [entities1label, setEntities1label] = useState('Person')
     const [entities2label, setEntities2label] = useState('Person')
 
-    const [entity1, setEntity1] = useState()
-    const [entity2, setEntity2] = useState()
+    const [entity1, setEntity1] = useState('')
+    const [entity2, setEntity2] = useState('')
 
     const [relationship, setRelationship] = useState('')
 
+    const [newrel, setNewrel] = useState('')
+
+    const [relDisable, setRelDisable] = useState(false)
     const onChangeEntities1Label = e => {
         setEntities1label(e.target.value)
     }
@@ -35,6 +38,15 @@ const ConnectEntities = () => {
 
     const onChangeRelationship = e => {
         setRelationship(e.target.value)
+    }
+    const onChangeNewRel = e => {
+        setNewrel(e.target.value)
+        if(e.target.value == ""){
+            setRelDisable(false)
+        }else{
+            setRelDisable(true)
+            setRelationship('')
+        }
     }
 
     useEffect(() => {
@@ -56,7 +68,24 @@ const ConnectEntities = () => {
             ent2:entity2,
             rel:relationship
         }
-        connectTwoEntities(data)
+        if(newrel !== ""){
+            data.rel = newrel
+        }
+        if(entity1 == "" || entity2 == ""){
+            alert("All entities should be filled!")
+        }else if(relDisable == true && newrel == ""){
+            alert("Add the new relationship")
+        }else if(relDisable == false && relationship == ""){
+            alert("Select the relationship")
+        }
+        
+        else{
+            connectTwoEntities(data)
+            setTimeout(() => {
+                props.history.push('/')
+           }, 1500);
+        }
+        
     }
     return (
         <form onSubmit={onSubmit} >
@@ -81,7 +110,7 @@ const ConnectEntities = () => {
 {/*--------------------------*/}
 <hr/>
 <div class="form-group">
-          <label>Category 1</label>
+          <label>Category 2</label>
           <select class="form-control" value={entities2label} onChange={onChangeEntities2Label} multiple={false}>
         {entities2labels.length !== 0 && entities2labels.map(enl => 
             <option value={enl}>{enl}</option>
@@ -102,12 +131,14 @@ const ConnectEntities = () => {
 
         <div class="form-group">
                 <label>Relationship</label>
-                <select class="form-control" value={relationship} onChange={onChangeRelationship} multiple={false}>
+                <select class="form-control" value={relationship} onChange={onChangeRelationship} multiple={false} disabled={relDisable}>
                 {relationships.length !== 0 && relationships.map(rel => 
                     <option value={rel}>{rel}</option>
                     )}
                     <option value=""></option>
             </select>
+            <label>You don't see your relationship ?</label>
+            <input type="text" class="form-control" placeholder="New relationship" value={newrel} name="newrel" onChange={onChangeNewRel} />
                 </div>
       
     <div className="form-group" >

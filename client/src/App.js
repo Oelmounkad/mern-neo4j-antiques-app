@@ -30,6 +30,7 @@ function App() {
           <Route exact path="/groups/add" component={AddGroup} />
           <Route exact path="/processes/add" component={AddProcess} />
 
+          <Route exact path="/resource/add" component={AddResource} />
           <Route exact path="/connect/group-process" component={ConnectGroupProcess} />
           <Route exact path="/connect/entities" component={ConnectEntities} />
 
