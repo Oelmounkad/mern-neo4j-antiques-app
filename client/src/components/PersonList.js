@@ -55,7 +55,11 @@ const onSubmit = e => {
       </div>
 
       <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/resource/add">Add New Resource</Link>
+      <Link class="btn btn-outline-success" to="/category/add">Add New Category</Link>
+      </div>
+
+      <div className="form-group" >
+      <Link class="btn btn-outline-success" to="/object/add">Add New Object</Link>
       </div>
 </form>
 

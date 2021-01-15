@@ -473,4 +473,118 @@ router.get('/entities/:name',async (req,res) => {
       });
     })
 
+
+// Get newly added categories
+router.get('/categories',async (req,res) => {
+
+  const query = `Match(n:Category) return n`
+let records = []
+var session = driver.session();
+  session.run(query)
+  .then( result => {
+          result.records.forEach(record => {
+            //console.log(record._fields[0].properties.label)
+            records.push(record._fields[0].properties.label)
+          })
+          res.json(records)
+  }
+    
+  )
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
+
+
+// Get Category properties
+router.get('/categories/properties/:name',async (req,res) => {
+
+  const query = `Match(n:Category {label: "${req.params.name}"})-[:HAS_PROPERTY]->(p:Property) return p.label`
+let records = []
+var session = driver.session();
+  session.run(query)
+  .then( result => {
+          result.records.forEach(record => {
+            
+            records.push(record._fields[0])
+          })
+          res.json(records)
+  }
+    
+  )
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
+
+
+
+
+// Add Category
+router.post('/categories',async (req,res) => {
+
+  const {categLabel,categProperties} = req.body
+  const trimmedProperties = categProperties.trim()
+  const propertiesArray = trimmedProperties.split(',')
+  const query = `Create(n:Category {label: "${categLabel}"}) return id(n)`
+
+var session = driver.session();
+  session.run(query)
+  .then( result => {
+                  let query2
+                  for (let i = 0; i < propertiesArray.length; i++) {
+                    /**Heere */
+                    query2 = `MATCH (n:Category) where id(n)=${result.records[0]._fields[0].low} Create (p:Property {label:"${propertiesArray[i]}"}) merge (n)-[:HAS_PROPERTY]->(p)`
+                                                        
+                    var session2 = driver.session();
+                      session2.run(query2)
+                      .then(function(result) {
+                        result.records.forEach(function(record) {
+                          console.log(record._fields[0])
+                        })
+                    
+                      })
+                      .catch(function(error) {
+                        console.log(error);
+                      });
+                        /**heere */
+                }  
+
+        //result.records[0]._fields[0].low  is the ID
+  }
+    
+  )
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
+
+
+// Get Category properties
+router.post('/objects',async (req,res) => {
+
+  const {categ,object} = req.body
+  let propertyValueString = ""
+  
+  Object.keys(object).map(key => propertyValueString += `${key}:"${object[key]}",`)
+  let finalizedString = propertyValueString.slice(0, -1)
+ // console.log('*************************',finalizedString)
+  const query = `Create(n:${categ} {${finalizedString}})`
+  //console.log('#############################',Object.keys(object))
+
+var session = driver.session();
+  session.run(query)
+  .then( 
+    res.send('Category added!')
+  )
+  .catch(function(error) {
+    console.log(error);
+  });
+  
+})
+
+
 module.exports = router

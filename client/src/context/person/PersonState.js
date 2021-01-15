@@ -19,7 +19,9 @@ import {GET_ALL_PERSONS,PERSIST_CHOSEN_PERSON,
 PERSIST_ENTITIES2,
 PERSIST_ENTITY_LABELS1,
 PERSIST_ENTITY_LABELS2,
-PERSIST_RELATIONSHIPS} from '../types'
+PERSIST_RELATIONSHIPS,
+PERSIST_CHOSEN_NEW_CATEG_PROPERTIES,
+PERSIST_NEW_CATEGS} from '../types'
 
 
 const PersonState = props => {
@@ -43,7 +45,9 @@ const initialState = {
     entities2:[],
     entities1labels:[],
     entities2labels:[],
-    relationships:[]
+    relationships:[],
+    newlyAddedCategories:[],
+    chosenCategoryProperties:[]
 }
 
 const [state, dispatch] = useReducer(PersonReducer, initialState)
@@ -395,7 +399,54 @@ const connectTwoEntities = async (data) => {
     }
 }
 
+// Add category
 
+const addCategory = async data => {
+
+    try {
+        await axios.post(`/api/graph/categories`,data)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Get newly added categories
+
+const getNewlyAddedCategories = async () => {
+    try { 
+        console.log('from actions get entities1')
+        const res = await axios.get(`/api/graph/categories`)
+       dispatch({
+        type: PERSIST_NEW_CATEGS,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+// Get newly added categories
+
+const getPropertiesForCategory = async name => {
+    try { 
+        console.log('from actions get entities1')
+        const res = await axios.get(`/api/graph/categories/properties/${name}`)
+       dispatch({
+        type: PERSIST_CHOSEN_NEW_CATEG_PROPERTIES,
+        payload: res.data
+       })
+    } catch (err) {
+       console.log(err)
+    }
+}
+
+const addObject = async data => {
+    try { 
+        const res = await axios.post(`/api/graph/objects`,data)
+    } catch (err) {
+       console.log(err)
+    }
+}
     return (
         <PersonContext.Provider value={{
             persons: state.persons,
@@ -416,6 +467,8 @@ const connectTwoEntities = async (data) => {
             entities1labels: state.entities1labels,
             entities2labels: state.entities2labels,
             relationships: state.relationships,
+            newlyAddedCategories: state.newlyAddedCategories,
+            chosenCategoryProperties:state.chosenCategoryProperties,
             getGroup,
             getAllPersons,
             searchPersons,
@@ -442,7 +495,11 @@ const connectTwoEntities = async (data) => {
             getEntities2,
             getEntityLabels,
             getRelationships,
-            connectTwoEntities
+            connectTwoEntities,
+            addCategory,
+            getNewlyAddedCategories,
+            getPropertiesForCategory,
+            addObject
         }}>
             {props.children}
         </PersonContext.Provider>

@@ -11,6 +11,8 @@ import AddProcess from './components/AddProcess';
 import ConnectGroupProcess from './components/ConnectGroupProcess';
 import EditPerson from './components/EditPerson';
 import ConnectEntities from './components/ConnectEntities';
+import AddCategory from './components/AddCategory';
+import AddObject from './components/AddObject';
 
 
 function App() {
@@ -33,6 +35,9 @@ function App() {
           <Route exact path="/resource/add" component={AddResource} />
           <Route exact path="/connect/group-process" component={ConnectGroupProcess} />
           <Route exact path="/connect/entities" component={ConnectEntities} />
+
+          <Route exact path="/category/add" component={AddCategory} />
+          <Route exact path="/object/add" component={AddObject} />
 
       </Switch>
 
