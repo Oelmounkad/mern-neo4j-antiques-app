@@ -13,13 +13,15 @@ import EditPerson from './components/EditPerson';
 import ConnectEntities from './components/ConnectEntities';
 import AddCategory from './components/AddCategory';
 import AddObject from './components/AddObject';
+import Header from './layout/Header';
 
 
 function App() {
   return (
    <PersonState>
+     
     <Router>
-
+      <Header />
       <Switch>
 
           <Route exact path="/" component={PersonList} />

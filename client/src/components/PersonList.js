@@ -36,31 +36,7 @@ const onSubmit = e => {
   <div className="form-group" >
       <input type="submit" class="btn btn-primary" value="Search"/>
       </div>
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/persons/add">Add Person</Link>
-      </div>
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/groups/add">Add Group</Link>
-      </div>
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/processes/add">Add Process</Link>
-      </div>
 
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/connect/group-process">Connect Grp-Process</Link>
-      </div>
-
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/connect/entities">Connect Everything</Link>
-      </div>
-
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/category/add">Add New Category</Link>
-      </div>
-
-      <div className="form-group" >
-      <Link class="btn btn-outline-success" to="/object/add">Add New Object</Link>
-      </div>
 </form>
 
 <br/>
