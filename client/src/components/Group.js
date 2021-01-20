@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom'
 import { ResponsiveNeoGraph } from "./NeoGraph";
 import PersonContext from '../context/person/PersonContext'
 
-const NEO4J_URI = "bolt://54.172.13.65:33412"; //20.74.17.168
+const NEO4J_URI = "bolt://54.172.13.65:33511"; //20.74.17.168
 const NEO4J_USER = "neo4j";
-const NEO4J_PASSWORD = "horn-photodiodes-weeds";
+const NEO4J_PASSWORD = "sale-independence-spars";
 
 const Group = props => {
     
